@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const chrome = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 
 // title 文档的标题
 // description  文档的描述  可以是 html
@@ -48,7 +49,11 @@ export default async (req, res) => {
     // descriptionSelectors
     const { url, selectors, titleSelectors, descriptionSelectors } = req.query;
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: chrome.args,
+        executablePath: await chrome.executablePath,
+        headless: chrome.headless,
+    });
 
     const page = await browser.newPage();
     await page.goto(url);
@@ -81,6 +86,6 @@ export default async (req, res) => {
     res.send(generateContent({
         ...dimensions,
         link: url.replace(/&/g, '%26'), // 不能含有 &,
-        atomlink: req.url.replace(/&/g, '%26'), // 不能含有 &
+        atomlink: `${req.headers['x-forwarded-proto']}://${req.headers.host}${req.url}`.replace(/&/g, '%26'), // 不能含有 &
     }))
 }
