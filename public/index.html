@@ -39,7 +39,7 @@
 
         const descriptionSelectors = encodeURIComponent(document.querySelector('#descriptionSelectors').value)
 
-        const rssUrl = `./api/rss?url=${url}&selectors=${selectors}&titleSelectors=${titleSelectors}&descriptionSelectors=${descriptionSelectors}`
+        const rssUrl = `https://rssfeed.now.sh/api/rss?url=${url}&selectors=${selectors}&titleSelectors=${titleSelectors}&descriptionSelectors=${descriptionSelectors}`
 
         document.querySelector('#rssUrl').textContent = rssUrl
 
