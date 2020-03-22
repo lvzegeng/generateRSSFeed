@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" >
+    <label for="url">源地址：</label>
+    <input type="text" id="url">
+    <br>
+
+    <label for="selectors">信息容器 选择器：</label>
+    <input type="text" id="selectors">
+    <br>
+
+    <label for="titleSelectors">信息容器 标题选择器：</label>
+    <input type="text" id="titleSelectors">
+    <br>
+
+    <label for="descriptionSelectors">信息容器 描述选择器：</label>
+    <input type="text" id="descriptionSelectors">
+    <br>
+
+    <button id="btn">查看</button>
+</form>
+<div id="content"></div>
+
+<script>
+    document.querySelector('#btn').addEventListener('click', function (e) {
+        e.preventDefault()
+
+        const url = encodeURIComponent(document.querySelector('#url').value)
+
+        const selectors = encodeURIComponent(document.querySelector('#selectors').value)
+
+        const titleSelectors = encodeURIComponent(document.querySelector('#titleSelectors').value)
+
+        const descriptionSelectors = encodeURIComponent(document.querySelector('#descriptionSelectors').value)
+
+        fetch(`./api/rss?url=${url}&selectors=${selectors}&titleSelectors=${titleSelectors}&descriptionSelectors=${descriptionSelectors}`).then(data=>data.text()).then(data=>{
+            document.querySelector('#content').textContent = data
+        })
+    })
+</script>
+</body>
+</html>

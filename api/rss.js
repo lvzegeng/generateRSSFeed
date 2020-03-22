@@ -2,12 +2,12 @@ const chrome = require('chrome-aws-lambda');
 const puppeteer = require('puppeteer-core');
 
 // title 文档的标题
-// description  文档的描述  可以是 html
+// description  文档的描述
 // link  文档的链接
 // atomlink  rss 链接
 // items  数据
 //   title 文章标题
-//   description 文章摘要或全文
+//   description 文章摘要或全文，可以是 html
 //   guid 文章唯一标示, 必须唯一
 //   link 指向文章的链接
 const generateContent=(data)=> {
@@ -28,7 +28,7 @@ const generateContent=(data)=> {
             ` <item>
             <title><![CDATA[${item.title}]]></title>
             <description><![CDATA[${item.description || item.title}]]></description>
-            <guid isPermaLink="false">${item.link || item.title}</guid>
+            <guid isPermaLink="false">${item.title +　item.description}</guid>
             <link>${item.link}</link>
         </item>`
         )
@@ -39,14 +39,7 @@ const generateContent=(data)=> {
 }
 
 
-// url 提前编码
-// http://127.0.0.1:7001/?url=https%3A%2F%2Fnewsupport.lenovo.com.cn%2FdriveList.html%3Ffromsource%3DdriveList%26selname%3D%25E5%25B0%258F%25E6%2596%25B0%2520Air-14%25202020%2520(Intel%25E5%25B9%25B3%25E5%258F%25B0%25EF%25BC%259AIIL%25E7%2589%2588)&selectors=.list-center&titleSelectors=.drive-name&descriptionSelectors=.drive-detail
-
 module.exports = async (req, res) => {
-
-    // selectors
-    // titleSelectors
-    // descriptionSelectors
     const { url, selectors, titleSelectors, descriptionSelectors } = req.query;
 
     const browser = await puppeteer.launch({
@@ -57,6 +50,7 @@ module.exports = async (req, res) => {
 
     const page = await browser.newPage();
 
+    // 只允许某种类型的请求
     await page.setRequestInterception(true);
     page.on('request', interceptedRequest => {
         if (['document', 'script', 'xhr', 'fetch'].includes(interceptedRequest.resourceType())){
@@ -71,6 +65,7 @@ module.exports = async (req, res) => {
         waitUntil: 'domcontentloaded'
     });
 
+    // 信息容器出现
     await page.waitFor(selectors)
 
     const dimensions = await page.evaluate((selectors, titleSelectors, descriptionSelectors) => {
