@@ -2,7 +2,7 @@
   "name": "generaterssfeed",
   "version": "1.0.0",
   "description": "",
-  "main": ".autod.conf.js",
+  "main": "",
   "directories": {
     "test": "test"
   },
