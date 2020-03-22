@@ -42,7 +42,7 @@ const generateContent=(data)=> {
 // url 提前编码
 // http://127.0.0.1:7001/?url=https%3A%2F%2Fnewsupport.lenovo.com.cn%2FdriveList.html%3Ffromsource%3DdriveList%26selname%3D%25E5%25B0%258F%25E6%2596%25B0%2520Air-14%25202020%2520(Intel%25E5%25B9%25B3%25E5%258F%25B0%25EF%25BC%259AIIL%25E7%2589%2588)&selectors=.list-center&titleSelectors=.drive-name&descriptionSelectors=.drive-detail
 
-export default async (req, res) => {
+module.exports = async (req, res) => {
 
     // selectors
     // titleSelectors
@@ -56,7 +56,22 @@ export default async (req, res) => {
     });
 
     const page = await browser.newPage();
-    await page.goto(url);
+
+    await page.setRequestInterception(true);
+    page.on('request', interceptedRequest => {
+        if (['document', 'script', 'xhr', 'fetch'].includes(interceptedRequest.resourceType())){
+            interceptedRequest.continue();
+        }
+        else{
+            interceptedRequest.abort();
+        }
+    });
+
+    await page.goto(url, {
+        waitUntil: 'domcontentloaded'
+    });
+
+    await page.waitFor(selectors)
 
     const dimensions = await page.evaluate((selectors, titleSelectors, descriptionSelectors) => {
         const doms = document.querySelectorAll(selectors);

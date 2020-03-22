@@ -1,48 +1,27 @@
 {
-  "name": "generateRSSFeed",
+  "name": "generaterssfeed",
   "version": "1.0.0",
   "description": "",
-  "private": true,
-  "egg": {
-    "declarations": true
+  "main": ".autod.conf.js",
+  "directories": {
+    "test": "test"
   },
   "dependencies": {
-    "egg": "^2.15.1",
-    "egg-scripts": "^2.11.0",
-    "puppeteer-core": "^2.1.1",
-    "chrome-aws-lambda": "^2.1.1"
+    "chrome-aws-lambda": "^2.1.1",
+    "puppeteer-core": "^2.1.1"
   },
-  "devDependencies": {
-    "autod": "^3.0.1",
-    "autod-egg": "^1.1.0",
-    "egg-bin": "^4.11.0",
-    "egg-ci": "^1.11.0",
-    "egg-mock": "^3.21.0",
-    "eslint": "^5.13.0",
-    "eslint-config-egg": "^7.1.0"
-  },
-  "engines": {
-    "node": ">=10.0.0"
-  },
+  "devDependencies": {},
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-init",
-    "stop": "egg-scripts stop --title=egg-server-init",
-    "dev": "egg-bin dev",
-    "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
-    "lint": "eslint .",
-    "ci": "npm run lint && npm run cov",
-    "autod": "autod"
-  },
-  "ci": {
-    "version": "10"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/lvzegeng/generateRSSFeed.git"
   },
   "author": "",
-  "license": "MIT"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lvzegeng/generateRSSFeed/issues"
+  },
+  "homepage": "https://github.com/lvzegeng/generateRSSFeed#readme"
 }
