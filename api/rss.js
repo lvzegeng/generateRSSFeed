@@ -10,7 +10,7 @@ const puppeteer = require('puppeteer-core');
 //   description 文章摘要或全文，可以是 html
 //   guid 文章唯一标示, 必须唯一
 //   link 指向文章的链接
-const generateContent=(data)=> {
+const generateContent = (data) => {
     return `<?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
@@ -28,7 +28,7 @@ const generateContent=(data)=> {
             ` <item>
             <title><![CDATA[${item.title}]]></title>
             <description><![CDATA[${item.description || item.title}]]></description>
-            <guid isPermaLink="false">${item.title +　item.description}</guid>
+            <guid isPermaLink="false">${item.title + item.description}</guid>
             <link>${item.link}</link>
         </item>`
         )
@@ -40,7 +40,7 @@ const generateContent=(data)=> {
 
 
 module.exports = async (req, res) => {
-    const { url, selectors, titleSelectors, descriptionSelectors } = req.query;
+    const {url, selectors, titleSelectors, descriptionSelectors} = req.query;
 
     const browser = await puppeteer.launch({
         args: chrome.args,
@@ -53,10 +53,9 @@ module.exports = async (req, res) => {
     // 只允许某种类型的请求
     await page.setRequestInterception(true);
     page.on('request', interceptedRequest => {
-        if (['document', 'script', 'xhr', 'fetch'].includes(interceptedRequest.resourceType())){
+        if (['document', 'script', 'xhr', 'fetch'].includes(interceptedRequest.resourceType())) {
             interceptedRequest.continue();
-        }
-        else{
+        } else {
             interceptedRequest.abort();
         }
     });
